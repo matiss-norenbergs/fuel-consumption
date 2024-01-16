@@ -9,39 +9,58 @@
 </script>
 
 <template>
-    <table class="table-wrapper">
-        <thead>
-            <tr>
-                <th v-for="({ name, textAlign }, index) in columns" :class="textAlign">{{ name }}</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr v-for="(item, index) in data">
-                <td v-for="({ field, textAlign }, index) in columns" :class="textAlign">
-                    {{ item[field] }}
-                </td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="table-wrapper">
+        <div class="table-toolbar">
+            <slot name="toolbar" />
+        </div>
+        <table class="table-comp">
+            <thead>
+                <tr>
+                    <th
+                        v-for="({ name, textAlign, width }, index) in columns"
+                        :class="textAlign"
+                        :style="{ 'minWidth': width + 'px' }"
+                    >
+                        {{ name }}
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(item, index) in data">
+                    <td v-for="({ field, textAlign }, index) in columns" :class="textAlign">
+                        {{ item[field] }}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </template>
 
 <style scoped>
     .table-wrapper {
-        width: 100%;
-        background: var(--transparent);
+        overflow: auto;
 
-        &, th, td {
-            border-right: 1px solid var(--accent);
-            border-left: 1px solid var(--accent);
-            border-collapse: collapse;
+        .table-toolbar {
+            margin-bottom: 1rem;
         }
-
-        th {
-            border-bottom: 1px solid var(--accent);
-        }
-
-        th, td {
-            padding: .4rem .8rem;
+        
+        .table-comp {
+            background: var(--transparent);
+    
+            &, th, td {
+                border-right: 1px solid var(--accent);
+                border-left: 1px solid var(--accent);
+                border-collapse: collapse;
+            }
+    
+            th {
+                border-bottom: 1px solid var(--accent);
+                font-weight: 600;
+            }
+    
+            th, td {
+                padding: .4rem .8rem;
+            }
         }
     }
 </style>

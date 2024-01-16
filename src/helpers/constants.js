@@ -2,37 +2,44 @@ const consumptionColumns = [
     {
         name: "Provider",
         field: "provider",
-        textAlign: "text-left"
+        textAlign: "text-left",
+        width: 120
     },
     {
         name: "Fuel type",
         field: "fuelType",
-        textAlign: "text-left"
+        textAlign: "text-left",
+        width: 100
     },
     {
         name: "Amount (l)",
         field: "amount",
-        textAlign: "text-right"
+        textAlign: "text-right",
+        width: 120
     },
     {
         name: "Price (€/l)",
         field: "price",
-        textAlign: "text-right"
+        textAlign: "text-right",
+        width: 120
     },
     {
         name: "Discount (€/l)",
         field: "discount",
-        textAlign: "text-right"
+        textAlign: "text-right",
+        width: 120
     },
     {
         name: "Date",
         field: "date",
-        textAlign: "text-center"
+        textAlign: "text-center",
+        width: 150
     },
     {
         name: "Total (€)",
         field: "total",
-        textAlign: "text-right"
+        textAlign: "text-right",
+        width: 120
     }
 ]
 
