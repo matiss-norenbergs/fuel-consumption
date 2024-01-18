@@ -65,6 +65,43 @@ const saveFuelDataList = (data) => {
     localStorage.setItem(MN_FUEL_DATA, JSON.stringify(data))
 }
 
+const getSummary = (data = []) => {
+    let totalSpent = 0
+    let totalAfterDiscount = 0
+    let fuelConsumed = 0
+    const allDates = []
+
+    data.forEach(({
+        amount,
+        totalPrice,
+        priceAfterDiscount,
+        date
+    }) => {
+        totalSpent += totalPrice
+        totalAfterDiscount += priceAfterDiscount
+        fuelConsumed += amount
+        allDates.push(getStringDate(date))
+    })
+
+    const minDate = new Date(Math.min.apply(null, allDates))
+    const maxDate = new Date(Math.max.apply(null, allDates))
+    const dateRange = minDate && maxDate ? `${getDateString(minDate)} - ${getDateString(maxDate)}` : null
+    const totalSaved = roundPrice(totalSpent - totalAfterDiscount)
+
+    totalSpent = roundPrice(totalSpent)
+    totalAfterDiscount = roundPrice(totalAfterDiscount)
+    fuelConsumed = roundPrice(fuelConsumed)
+    
+
+    return {
+        dateRange,
+        totalSpent,
+        totalAfterDiscount,
+        fuelConsumed,
+        totalSaved
+    }
+}
+
 export {
     getDateString,
     getStringDate,
@@ -72,5 +109,6 @@ export {
     getFuelData,
     saveFuelData,
     saveFuelDataList,
-    roundPrice
+    roundPrice,
+    getSummary
 }

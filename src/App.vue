@@ -11,12 +11,12 @@
     import Button from "./components/Button.vue"
     import Modal from "./components/Modal.vue"
     import FuelForm from "./components/FuelForm.vue"
+    import RightSidePanel from "./components/RightSidePanel.vue"
 
     const data = ref([])
     const isModalVisible = ref(false)
     const isActionDisabled = ref(true)
     const formElementRef = ref()
-    const totalSpent = ref(0)
 
     onMounted(() => {
         getData()
@@ -27,17 +27,13 @@
         const fuelData = getFuelData()
 
         //console.log(fuelData)
-        let totalSpentTemp = 0
-        fuelData.map(({ priceAfterDiscount }) => {
-            totalSpentTemp += priceAfterDiscount
-        })
-
-        totalSpent.value = roundPrice(totalSpentTemp)
+        
         data.value = fuelData
     }
 
     function showModal() {
         isModalVisible.value = true
+        data.value = []
     }
 
     function closeModal(refreshData = false) {
@@ -63,7 +59,10 @@
     <Header title="Fuel consumption" />
     <main class="content-wrapper">
         <div class="content-inner-wrapper">
-            <Table :columns :data>
+            <Table
+                :columns
+                :data
+            >
                 <template #toolbar>
                     <ButtonGroup>
                         <Button
@@ -92,7 +91,6 @@
                     >
                         Get data
                     </Button>
-                    {{ totalSpent }}
                 </template>
             </Table>
             <Modal
@@ -105,17 +103,23 @@
                 <FuelForm ref="formElementRef" />
             </Modal>
         </div>
+        <div class="right-side-panel">
+            <RightSidePanel :data />
+        </div>
     </main>
     <!-- <Footer /> -->
 </template>
 
 <style scoped>
     .content-wrapper {
+        display: flex;
+        justify-content: space-between;
         overflow: hidden;
         height: 100vh;
         padding-top: var(--header-height);
 
         .content-inner-wrapper {
+            flex: 1;
             height: 100%;
             padding: 1rem var(--side-padding);
         }

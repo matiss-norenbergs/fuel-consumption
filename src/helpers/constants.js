@@ -35,13 +35,13 @@ const consumptionColumns = [
         name: "Date",
         field: "date",
         textAlign: "text-center",
-        width: 150
+        width: 160
     },
     {
         name: "Total (€)",
         field: "total",
         textAlign: "text-right",
-        width: 120,
+        width: 150,
         valueGetter: calculateTotal
     }
 ]

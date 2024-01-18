@@ -51,6 +51,8 @@
         .table-content {
             flex: 1;
             overflow: auto;
+            white-space: nowrap;
+            width: 100%;
 
             .table-comp {
                 position: relative;
