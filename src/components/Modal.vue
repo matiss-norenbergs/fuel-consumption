@@ -1,8 +1,10 @@
 <script setup>
+    import { ref } from "vue"
+
     import Title from "./Title.vue"
     import Button from "./Button.vue"
 
-    defineProps({
+    const props = defineProps({
         title: {
             type: String,
             required: true
@@ -14,52 +16,65 @@
         confirmText: {
             type: [String, Boolean],
             default: "Confirm"
+        },
+        visible: {
+            type: Boolean
         }
     })
 
-    const emit = defineEmits(["close"])
+    const emit = defineEmits(["close", "confirm"])
+    const contentRef = ref(null)
 
     const close = () => emit("close")
+    const onConfirm = () => emit("confirm")
 </script>
 
 <template>
-    <div class="modal-backdrop">
-        <div
-            class="modal"
-            role="dialog"
-        >
-            <header class="modal-header">
-                <slot name="header">
-                    <Title :title :level="3" />
-                </slot>
-                <button
-                    class="button-close"
-                    @click="close"
-                >
-                    &times;
-                </button>
-            </header>
-            <section class="modal-body">
-                <slot name="body">
-                    Content!
-                </slot>
-            </section>
-            <footer class="modal-footer">
-                <Button
-                    v-if="cancelText"
-                    @click="close"
-                >
-                    {{ cancelText }}
-                </Button>
-                <Button
-                    v-if="confirmText"
-                    type="primary"
-                >
-                    {{ confirmText }}
-                </Button>
-            </footer>
+    <transition name="modal">
+        <div class="modal-backdrop">
+            <div
+                class="modal"
+                role="dialog"
+            >
+                <header class="modal-header">
+                    <slot name="header">
+                        <Title :title :level="3" />
+                    </slot>
+                    <button
+                        class="button-close"
+                        @click="close"
+                    >
+                        &times;
+                    </button>
+                </header>
+                <transition name="content">
+                    <section
+                        class="modal-body"
+                        v-if="visible"
+                    >
+                        <slot ref="contentRef">
+                            Content!
+                        </slot>
+                    </section>
+                </transition>
+                <footer class="modal-footer">
+                    <Button
+                        v-if="cancelText"
+                        @click="close"
+                    >
+                        {{ cancelText }}
+                    </Button>
+                    <Button
+                        v-if="confirmText"
+                        type="primary"
+                        @click="onConfirm"
+                    >
+                        {{ confirmText }}
+                    </Button>
+                </footer>
+            </div>
         </div>
-    </div>
+    </transition>
 </template>
 
 <style>
@@ -124,5 +139,19 @@
             justify-content: flex-end;
             gap: .5rem;
         }
+    }
+
+    .modal-enter-from,
+    .modal-leave-to,
+    .content-enter-from,
+    .content-leave-to {
+        opacity: 0;
+    }
+
+    .modal-enter-active,
+    .modal-leave-active,
+    .content-enter-active,
+    .content-leave-active {
+        transition: opacity .5s ease;
     }
 </style>

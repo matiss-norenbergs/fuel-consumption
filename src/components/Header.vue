@@ -19,9 +19,13 @@
 
 <style scoped>
     .header-wrapper {
+        position: fixed;
         display: flex;
         align-items: center;
         gap: 1rem;
-        padding: 1rem var(--side-padding);
+        width: 100%;
+        height: var(--header-height);
+        padding: 0 var(--side-padding);
+        background: var(--transparent);
     }
 </style>

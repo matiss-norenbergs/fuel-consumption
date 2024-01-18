@@ -5,32 +5,39 @@
     --grey: #555;
     --light-grey: #ddd;
     --vue-green: hsla(160, 100%, 37%, 1);
+    --vue-green-rgb: 0, 189, 126;
     --grey-rgb: 160, 160, 160;
 
     --background-dark: var(--dark-grey);
     --background-dark-2: var(--grey);
     --color-dark: var(--light-grey);
     --accent-dark: var(--vue-green);
+    --accent-dark-rgb: var(--vue-green-rgb);
 
     --background: var(--background-dark);
     --background-2: var(--background-dark-2);
     --color: var(--color-dark);
     --accent: var(--accent-dark);
+    --accent-rgb: var(--accent-dark-rgb);
     --transparent: rgba(0, 0, 0, 0.2);
 
     --font-family: 'Montserrat', sans-serif;
 
     --font-size: 14px;
     --side-padding: 2rem;
+    --border-radius: 5px;
+    --header-height: 5rem;
 }
 
 * {
     margin: 0;
     padding: 0;
     border: none;
+    box-sizing: border-box;
 }
 
 body {
+    max-height: 100vh;
     background: var(--background-dark);
     color: var(--color-dark);
     font-family: var(--font-family);
@@ -42,7 +49,7 @@ html *::-webkit-scrollbar{
 }
 
 html *::-webkit-scrollbar-track{
-    background: rgba(0, 0, 0, 0.08);
+    background: var(--transparent);
 }
 
 html *::-webkit-scrollbar-thumb{
