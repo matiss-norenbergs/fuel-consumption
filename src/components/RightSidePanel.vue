@@ -39,6 +39,12 @@
         <main class="content-wrapper">
             <div
                 class="prop-label"
+                label="Refil count"
+            >
+                {{ summary?.refilCount || 0 }}
+            </div>
+            <div
+                class="prop-label"
                 label="Fuel consumed"
             >
                 {{ summary?.fuelConsumed || 0 }} (l)

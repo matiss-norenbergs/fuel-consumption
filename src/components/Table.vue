@@ -16,7 +16,7 @@
         <div class="table-content">
             <table class="table-comp">
                 <thead>
-                    <tr class="header-row">
+                    <tr>
                         <th
                             v-for="({ name, textAlign, width }, index) in columns"
                             :class="textAlign"
