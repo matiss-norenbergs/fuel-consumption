@@ -74,6 +74,6 @@
 
 <style scoped>
     .mn-icon {
-        fill: var(--accent-dark);
+        fill: var(--accent);
     }
 </style>

@@ -7,7 +7,8 @@
             type: String,
             required: true
         },
-        padded: Boolean
+        padded: Boolean,
+        fixedWidth: Boolean
     })
 
     const iconStyles = reactive({
@@ -19,6 +20,7 @@
     <FontAwesomeIcon
         :class="iconStyles"
         :icon
+        :fixedWidth
     />
 </template>
 

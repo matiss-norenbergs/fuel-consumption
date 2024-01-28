@@ -36,15 +36,14 @@
         @click="handleImportClick"
         icon="file-import"
     >
-        Import JSON
+        <input
+            class="file-input"
+            ref="importFileRef"
+            type="file"
+            accept=".json"
+            :onChange="handleFileChange"
+        />
     </Button>
-    <input
-        class="file-input"
-        ref="importFileRef"
-        type="file"
-        accept=".json"
-        :onChange="handleFileChange"
-    />
 </template>
 
 <style scoped>

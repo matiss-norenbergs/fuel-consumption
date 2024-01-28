@@ -1,6 +1,7 @@
 <script setup>
     import Title from "./Title.vue"
     import MNIcon from "./icons/MNIcon.vue"
+    import ThemePicker from "./ThemePicker.vue"
 
     defineProps({
         title: {
@@ -12,8 +13,11 @@
 
 <template>
     <header class="header-wrapper">
-        <MNIcon />
-        <Title :title :level="2" />
+        <div class="header-title">
+            <MNIcon />
+            <Title :title :level="2" />
+        </div>
+        <ThemePicker />
     </header>
 </template>
 
@@ -22,10 +26,16 @@
         position: fixed;
         display: flex;
         align-items: center;
-        gap: 1rem;
+        justify-content: space-between;
         width: 100%;
         height: var(--header-height);
         padding: 0 var(--side-padding);
         background: var(--transparent);
+
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
     }
 </style>

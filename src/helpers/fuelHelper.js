@@ -1,20 +1,21 @@
+import moment from "moment"
+
+import { localStorageConstants } from "./constants"
 import { getStringDate, getDateString } from "./dateHelper"
 import { exportFile } from "./fileHelper"
 
-const MN_FUEL_DATA = "MN_FUEL_DATA"
-
-const roundPrice = (price) => Math.round(price * 100) / 100
+const roundNumber = (number) => Math.round(number * 100) / 100
 
 const calculateFuelPrice = ({ amount, price, discount }) => {
-    const totalPrice = roundPrice(amount * price)
-    const totalDiscount = roundPrice(discount * amount)
-    const  priceAfterDiscount = roundPrice(totalPrice - totalDiscount)
+    const totalPrice = roundNumber(amount * price)
+    const totalDiscount = roundNumber(discount * amount)
+    const  priceAfterDiscount = roundNumber(totalPrice - totalDiscount)
     
     return { totalPrice, priceAfterDiscount, totalDiscount }
 }
 
 const getFuelData = () => {
-    const data = JSON.parse(localStorage.getItem(MN_FUEL_DATA)) || []
+    const data = JSON.parse(localStorage.getItem(localStorageConstants.MN_FUEL_DATA)) || []
     return data.map((item) => {
         const calcPrices = calculateFuelPrice(item)
 
@@ -40,19 +41,22 @@ const saveFuelData = (data) => {
 }
 
 const saveFuelDataList = (data) => {
-    localStorage.setItem(MN_FUEL_DATA, JSON.stringify(data))
+    localStorage.setItem(localStorageConstants.MN_FUEL_DATA, JSON.stringify(data))
 }
 
-const getSummary = (data = []) => {
-    let totalSpent = 0
-    let totalAfterDiscount = 0
-    let fuelConsumed = 0
-    const allDates = []
-
+const getSummary = (data = []) => {    
     if (data.length === 0)
         return
 
+    let totalSpent = 0
+    let totalAfterDiscount = 0
+    let fuelConsumed = 0
+
+    const allDates = []
+    const specificFuelData = {}
+
     data.forEach(({
+        fuelType,
         amount,
         totalPrice,
         priceAfterDiscount,
@@ -61,31 +65,66 @@ const getSummary = (data = []) => {
         totalSpent += totalPrice
         totalAfterDiscount += priceAfterDiscount
         fuelConsumed += amount
+
         allDates.push(getStringDate(date))
+
+        if (!specificFuelData[fuelType]) {
+            specificFuelData[fuelType] = {
+                from: date,
+                to: date,
+                refills: 1,
+                totalSpent: totalPrice,
+                totalSpentDiscount: priceAfterDiscount,
+                amount: amount
+            }
+        } else {
+            specificFuelData[fuelType].from = date
+            specificFuelData[fuelType].refills += 1
+            specificFuelData[fuelType].totalSpent += totalPrice
+            specificFuelData[fuelType].totalSpentDiscount += priceAfterDiscount
+            specificFuelData[fuelType].amount += amount
+        }
     })
 
-    const refilCount = data.length
+    Object.keys(specificFuelData).forEach(fuelType => {
+        let fuelData = specificFuelData[fuelType]
+        let startDate = moment(fuelData.from, "dd/MM/yyyy")
+        let endDate = moment(fuelData.to, "dd/MM/yyyy")
+
+        specificFuelData[fuelType].totalSpent = roundNumber(fuelData.totalSpent)
+        specificFuelData[fuelType].totalSpentDiscount = roundNumber(fuelData.totalSpentDiscount)
+        specificFuelData[fuelType].amount = roundNumber(fuelData.amount)
+        specificFuelData[fuelType].periodDiffDays = endDate.diff(startDate, "days")
+    })
+
+    const sortedFuelDataTypes = Object.keys(specificFuelData).sort(function(a,b){ return specificFuelData[a].totalSpentDiscount - specificFuelData[b].totalSpentDiscount }).reverse()
+    const sortedFuelData = {}
+    sortedFuelDataTypes.forEach(type => {
+        sortedFuelData[type] = specificFuelData[type]
+    })
+
+    const refillCount = data.length
     const minDate = new Date(Math.min.apply(null, allDates))
     const maxDate = new Date(Math.max.apply(null, allDates))
     const dateRange = minDate && maxDate ? `${getDateString(minDate)} - ${getDateString(maxDate)}` : null
-    const totalSaved = roundPrice(totalSpent - totalAfterDiscount)
+    const totalSaved = roundNumber(totalSpent - totalAfterDiscount)
 
-    totalSpent = roundPrice(totalSpent)
-    totalAfterDiscount = roundPrice(totalAfterDiscount)
-    fuelConsumed = roundPrice(fuelConsumed)
+    totalSpent = roundNumber(totalSpent)
+    totalAfterDiscount = roundNumber(totalAfterDiscount)
+    fuelConsumed = roundNumber(fuelConsumed)
 
     return {
-        refilCount,
+        refillCount,
         dateRange,
         totalSpent,
         totalAfterDiscount,
         fuelConsumed,
-        totalSaved
+        totalSaved,
+        sortedFuelData
     }
 }
 
-const exportFuelData = () => {
-    const data = getFuelData()
+const exportFuelData = (data = []) => {
     if (data.length === 0)
         return
 
@@ -114,7 +153,7 @@ const exportFuelData = () => {
         fuelData: exportData
     }, null, 4)
 
-    exportFile(jsonData, `FuelData_${new Date().valueOf()}`, ".json")
+    exportFile(jsonData, `FuelData_${moment().valueOf()}`, ".json")
 }
 
 export {
@@ -124,7 +163,7 @@ export {
     getFuelData,
     saveFuelData,
     saveFuelDataList,
-    roundPrice,
+    roundNumber,
     getSummary,
     exportFuelData
 }

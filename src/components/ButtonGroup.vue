@@ -6,8 +6,6 @@
 
 <style scoped>
     .button-group {
-        --border-radius: 4px;
-
         display: inline-block;
         margin-right: .8rem;
 
@@ -27,6 +25,24 @@
                 border-top-right-radius: var(--border-radius);
                 border-bottom-right-radius: var(--border-radius);
             }
+        }
+
+        :global(.tooltip-wrapper .button-wrapper) {
+            border-radius: 0;
+        }
+
+        :global(.tooltip-wrapper:first-child .button-wrapper) {
+            border-top-left-radius: var(--border-radius);
+            border-bottom-left-radius: var(--border-radius);
+        }
+
+        :global(.tooltip-wrapper .button-wrapper:nth-child(n + 2):nth-child(n)) {
+            border-left: none;
+        }
+
+        :global(.tooltip-wrapper:last-child .button-wrapper) {
+            border-top-right-radius: var(--border-radius);
+            border-bottom-right-radius: var(--border-radius);
         }
     }
 </style>

@@ -1,8 +1,8 @@
 <script setup>
     import { ref, onMounted } from "vue"
 
-    import { consumptionColumns as columns, consumptionData } from "./helpers/constants.js"
-    import { getFuelData, saveFuelDataList, roundPrice, exportFuelData } from "./helpers/fuelHelper.js"
+    import { consumptionColumns as columns } from "./helpers/constants.js"
+    import { getFuelData, saveFuelDataList, exportFuelData } from "./helpers/fuelHelper.js"
 
     import Header from "./components/Header.vue"
     import Footer from "./components/Footer.vue"
@@ -14,15 +14,12 @@
     import FuelForm from "./components/FuelForm.vue"
     import RightSidePanel from "./components/RightSidePanel.vue"
     import ImportJson from "./components/ImportJson.vue"
+    import Tooltip from "./components/Tooltip.vue"
 
     const data = ref([])
     const isModalVisible = ref(false)
     const isActionDisabled = ref(true)
     const formElementRef = ref()
-
-    onMounted(() => {
-        getData()
-    })
 
     function getData() {
         const fuelData = getFuelData()
@@ -60,7 +57,11 @@
         getData()
     }
 
-    const handleExportClick = () => exportFuelData()
+    const handleExportClick = () => exportFuelData(data.value)
+
+    onMounted(() => {
+        getData()
+    })
 </script>
 
 <template>
@@ -102,16 +103,17 @@
                                 Get data
                             </Button>
                         </div>
-                        <div>
-                            <ImportJson :onImport="onFileImport" />
-                            <ButtonSpacer />
-                            <Button
-                                :onClick="handleExportClick"
-                                icon="file-export"
-                            >
-                                Export JSON
-                            </Button>
-                        </div>
+                        <ButtonGroup>
+                            <Tooltip text="Import">
+                                <ImportJson :onImport="onFileImport" />
+                            </Tooltip>
+                            <Tooltip text="Export">
+                                <Button
+                                    :onClick="handleExportClick"
+                                    icon="file-export"
+                                />
+                            </Tooltip>
+                        </ButtonGroup>
                     </div>
                 </template>
             </Table>
