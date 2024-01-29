@@ -51,7 +51,22 @@ const consumptionColumns = [
     }
 ]
 
+const fuelTypeOptions = {
+    1: "Diesel",
+    2: "Gasoline (E98)",
+    3: "Gasoline (E95)",
+    4: "Gas"
+}
+
+const fuelProviderOptions = {
+    1: "Viada",
+    2: "Kings",
+    3: "Neste"
+}
+
 export {
     localStorageConstants,
-    consumptionColumns
+    consumptionColumns,
+    fuelTypeOptions,
+    fuelProviderOptions
 }

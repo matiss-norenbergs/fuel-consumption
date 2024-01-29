@@ -1,6 +1,6 @@
 import moment from "moment"
 
-import { localStorageConstants } from "./constants"
+import { fuelProviderOptions, fuelTypeOptions, localStorageConstants } from "./constants"
 import { getStringDate, getDateString } from "./dateHelper"
 import { exportFile } from "./fileHelper"
 
@@ -16,11 +16,13 @@ const calculateFuelPrice = ({ amount, price, discount }) => {
 
 const getFuelData = () => {
     const data = JSON.parse(localStorage.getItem(localStorageConstants.MN_FUEL_DATA)) || []
-    return data.map((item) => {
-        const calcPrices = calculateFuelPrice(item)
+    return data.map(({ fuelType, provider, ...rest }) => {
+        const calcPrices = calculateFuelPrice(rest)
 
         return {
-            ...item,
+            ...rest,
+            fuelType: fuelTypeOptions[fuelType],
+            provider: fuelProviderOptions[provider],
             totalPrice: calcPrices.totalPrice,
             priceAfterDiscount: calcPrices.priceAfterDiscount
         }
@@ -156,6 +158,44 @@ const exportFuelData = (data = []) => {
     exportFile(jsonData, `FuelData_${moment().valueOf()}`, ".json")
 }
 
+const invertObject = (targetObject = {}) => {
+    const invertedObject = {}
+
+    Object.keys(targetObject).forEach(key => {
+        invertedObject[targetObject[key]] = key
+    })
+
+    return invertedObject
+}
+
+const importFuelData = (data = []) => {
+    if (data.length === 0)
+        return
+
+    const invertedFuelTypes = invertObject(fuelTypeOptions)
+    const invertedProviders = invertObject(fuelProviderOptions)
+
+    const importedData = data.map(({
+        _id,
+        provider,
+        fuelType,
+        amount,
+        price,
+        discount,
+        date
+    }) => ({
+        _id,
+        provider: Number(invertedProviders[provider]),
+        fuelType: Number(invertedFuelTypes[fuelType]),
+        amount,
+        price,
+        discount,
+        date
+    }))
+
+    saveFuelDataList(importedData)
+}
+
 export {
     getDateString,
     getStringDate,
@@ -165,5 +205,6 @@ export {
     saveFuelDataList,
     roundNumber,
     getSummary,
-    exportFuelData
+    exportFuelData,
+    importFuelData
 }

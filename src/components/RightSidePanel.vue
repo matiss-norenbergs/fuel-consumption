@@ -200,7 +200,6 @@
         }
 
         .rsp-content {
-            position: absolute;
             display: flex;
             flex-direction: column;
             

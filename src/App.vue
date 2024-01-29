@@ -2,7 +2,7 @@
     import { ref, onMounted } from "vue"
 
     import { consumptionColumns as columns } from "./helpers/constants.js"
-    import { getFuelData, saveFuelDataList, exportFuelData } from "./helpers/fuelHelper.js"
+    import { getFuelData, saveFuelDataList, exportFuelData, importFuelData } from "./helpers/fuelHelper.js"
 
     import Header from "./components/Header.vue"
     import Footer from "./components/Footer.vue"
@@ -53,7 +53,7 @@
         if (!fuelData || fuelData?.length === 0)
             return
 
-        saveFuelDataList(fuelData)
+        importFuelData(fuelData)
         getData()
     }
 

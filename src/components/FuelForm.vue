@@ -1,40 +1,12 @@
 <script setup>
     import { ref } from "vue"
 
+    import { fuelTypeOptions, fuelProviderOptions } from "../helpers/constants.js"
     import { saveFuelData, getDateString } from "../helpers/fuelHelper.js"
 
-    const fuelProviders = ref([
-        {
-            id: 1,
-            name: "Viada"
-        },
-        {
-            id: 2,
-            name: "Neste"
-        },
-        {
-            id: 3,
-            name: "Kings"
-        }
-    ])
-    const fuelTypes = ref([
-        {
-            id: 1,
-            name: "Diesel"
-        },
-        {
-            id: 2,
-            name: "Gasoline (E98)"
-        },
-        {
-            id: 3,
-            name: "Gasoline (E95)"
-        }
-    ])
-
     const form = ref({
-        provider: "Viada",
-        fuelType: "Diesel",
+        provider: 1,
+        fuelType: 1,
         amount: 0,
         price: 0,
         discount: 0,
@@ -81,10 +53,10 @@
                 required
             >
                 <option
-                    v-for="({ id, name }, index) in fuelProviders"
-                    v-bind:value="name"
+                    v-for="(fuelProviderOption, fuelProviderKey) in fuelProviderOptions"
+                    v-bind:value="fuelProviderKey"
                 >
-                    {{ name }}
+                    {{ fuelProviderOption }}
                 </option>
             </select>
             <label for="provider">Provider</label>
@@ -96,10 +68,10 @@
                 required
             >
                 <option
-                    v-for="({ id, name }, index) in fuelTypes"
-                    v-bind:value="name"
+                    v-for="(fuelTypeOption, fuelTypeKey) in fuelTypeOptions"
+                    v-bind:value="fuelTypeKey"
                 >
-                    {{ name }}
+                    {{ fuelTypeOption }}
                 </option>
             </select>
             <label for="fuelType">Fuel type</label>
