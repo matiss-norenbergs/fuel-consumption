@@ -3,6 +3,7 @@
 
     import { consumptionColumns as columns } from "./helpers/constants.js"
     import { getFuelData, saveFuelDataList, exportFuelData, importFuelData } from "./helpers/fuelHelper.js"
+    import { getTranslation } from "./helpers/translationHelper.js"
 
     import Header from "./components/Header.vue"
     import Footer from "./components/Footer.vue"
@@ -15,6 +16,8 @@
     import RightSidePanel from "./components/RightSidePanel.vue"
     import ImportJson from "./components/ImportJson.vue"
     import Tooltip from "./components/Tooltip.vue"
+
+    const appTitleTranslation = getTranslation('appTitle')
 
     const data = ref([])
     const isModalVisible = ref(false)
@@ -60,12 +63,13 @@
     const handleExportClick = () => exportFuelData(data.value)
 
     onMounted(() => {
+        document.title = appTitleTranslation
         getData()
     })
 </script>
 
 <template>
-    <Header title="Fuel consumption" />
+    <Header :title="appTitleTranslation" />
     <main class="content-wrapper">
         <div class="content-inner-wrapper">
             <Table
@@ -81,33 +85,33 @@
                                     :onClick="showModal"
                                     icon="plus"
                                 >
-                                    Create
+                                    {{ getTranslation("create") }}
                                 </Button>
                                 <Button
                                     :disabled="isActionDisabled"
                                     icon="edit"
                                 >
-                                    Edit
+                                    {{ getTranslation("edit") }}
                                 </Button>
                                 <Button
                                     :disabled="isActionDisabled"
                                     icon="trash-alt"
                                 >
-                                    Delete
+                                    {{ getTranslation("delete") }}
                                 </Button>
                             </ButtonGroup>
                             <Button
                                 :disabled="isActionDisabled"
                                 icon="sync"
                             >
-                                Get data
+                                {{ getTranslation("getData") }}
                             </Button>
                         </div>
                         <ButtonGroup>
-                            <Tooltip text="Import">
+                            <Tooltip :text="getTranslation('import')">
                                 <ImportJson :onImport="onFileImport" />
                             </Tooltip>
-                            <Tooltip text="Export">
+                            <Tooltip :text="getTranslation('export')">
                                 <Button
                                     :onClick="handleExportClick"
                                     icon="file-export"
@@ -120,7 +124,7 @@
             <Modal
                 v-show="isModalVisible"
                 :visible="isModalVisible"
-                title="Create record"
+                :title="getTranslation('createRecord')"
                 @close="closeModal"
                 @confirm="onConfirm"
             >

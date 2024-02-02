@@ -2,6 +2,7 @@
     import { ref, watch, computed } from "vue"
 
     import { getSummary } from "../helpers/fuelHelper.js"
+    import { getTranslation } from "../helpers/translationHelper.js"
 
     import Title from "./Title.vue"
     import FaIcon from "./FaIcon.vue"
@@ -12,6 +13,14 @@
             default: []
         }
     })
+
+    const refillsTranslation = getTranslation('refills')
+    const fuelAmountTranslation = getTranslation('fuelAmount')
+    const beforeDiscountTranslation = getTranslation('beforeDiscount')
+    const afterDiscountTranslation = getTranslation('afterDiscount')
+    const periodTranslation = getTranslation('period')
+    const durationTranslation = getTranslation('duration')
+    const daysTranslation = getTranslation('days')
 
     const summary = ref({})
     const isCollapsed = ref(false)
@@ -49,7 +58,7 @@
                         padded
                     />
                     <Title
-                        title="Summary"
+                        :title="getTranslation('summary')"
                         :level="3"
                     />
                 </span>
@@ -58,38 +67,38 @@
             <main class="content-wrapper">
                 <div
                     class="prop-label"
-                    label="Refill count"
+                    :label="refillsTranslation"
                 >
                     {{ summary?.refillCount || 0 }}
                 </div>
                 <div
                     class="prop-label"
-                    label="Fuel consumed"
+                    :label="fuelAmountTranslation"
                 >
                     {{ summary?.fuelConsumed || 0 }} (l)
                 </div>
                 <div
                     class="prop-label"
-                    label="Total"
+                    :label="beforeDiscountTranslation"
                 >
                     {{ summary?.totalSpent || 0 }} (€)
                 </div>
                 <div
                     class="prop-label"
-                    label="Total after discount"
+                    :label="afterDiscountTranslation"
                 >
                     {{ summary?.totalAfterDiscount || 0 }} (€)
                 </div>
                 <div
                     class="prop-label"
-                    label="Total saved"
+                    :label="getTranslation('totalSaved')"
                 >
                     {{ summary?.totalSaved || 0 }} (€)
                 </div>
                 <header class="header-wrapper header-section">
                     <span>
                         <Title
-                            title="Details"
+                            :title="getTranslation('details')"
                             :level="3"
                         />
                     </span>
@@ -115,37 +124,37 @@
                         </div>
                         <div
                             class="prop-label"
-                            label="Period"
+                            :label="periodTranslation"
                         >
                             {{ `${from} - ${to}` }}
                         </div>
                         <div
                             class="prop-label"
-                            label="Duration"
+                            :label="durationTranslation"
                         >
-                            {{ `${periodDiffDays} days` }}
+                            {{ `${periodDiffDays} ${daysTranslation}` }}
                         </div>
                         <div
                             class="prop-label"
-                            label="Refills"
+                            :label="refillsTranslation"
                         >
                             {{ refills || 0 }}
                         </div>
                         <div
                             class="prop-label"
-                            label="Before discount"
+                            :label="beforeDiscountTranslation"
                         >
                             {{ totalSpent || 0 }} (€)
                         </div>
                         <div
                             class="prop-label"
-                            label="After discount"
+                            :label="afterDiscountTranslation"
                         >
                             {{ totalSpentDiscount|| 0 }} (€)
                         </div>
                         <div
                             class="prop-label"
-                            label="Fuel amount"
+                            :label="fuelAmountTranslation"
                         >
                             {{ amount || 0 }} (l)
                         </div>

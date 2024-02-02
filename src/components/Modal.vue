@@ -1,6 +1,8 @@
 <script setup>
     import { ref } from "vue"
 
+    import { getTranslation } from "../helpers/translationHelper.js"
+
     import Title from "./Title.vue"
     import Button from "./Button.vue"
 
@@ -11,11 +13,11 @@
         },
         cancelText: {
             type: [String, Boolean],
-            default: "Cancel"
+            default: getTranslation("cancel")
         },
         confirmText: {
             type: [String, Boolean],
-            default: "Confirm"
+            default: getTranslation("confirm")
         },
         visible: {
             type: Boolean

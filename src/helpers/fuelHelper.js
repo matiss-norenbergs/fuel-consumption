@@ -3,6 +3,7 @@ import moment from "moment"
 import { fuelProviderOptions, fuelTypeOptions, localStorageConstants } from "./constants"
 import { getStringDate, getDateString } from "./dateHelper"
 import { exportFile } from "./fileHelper"
+import { getTranslation } from "./translationHelper"
 
 const roundNumber = (number) => Math.round(number * 100) / 100
 
@@ -16,11 +17,14 @@ const calculateFuelPrice = ({ amount, price, discount }) => {
 
 const getFuelData = () => {
     const data = JSON.parse(localStorage.getItem(localStorageConstants.MN_FUEL_DATA)) || []
-    return data.map(({ fuelType, provider, ...rest }) => {
+    const dateTimeShortFormat = getTranslation("dateTimeShort")
+
+    return data.map(({ fuelType, provider, date, ...rest }) => {
         const calcPrices = calculateFuelPrice(rest)
 
         return {
             ...rest,
+            date: moment(date, "DD/MM/YYYY").format(dateTimeShortFormat),
             fuelType: fuelTypeOptions[fuelType],
             provider: fuelProviderOptions[provider],
             totalPrice: calcPrices.totalPrice,
@@ -88,10 +92,12 @@ const getSummary = (data = []) => {
         }
     })
 
+    const dateTimeShortFormat = getTranslation("dateTimeShort")
+
     Object.keys(specificFuelData).forEach(fuelType => {
         let fuelData = specificFuelData[fuelType]
-        let startDate = moment(fuelData.from, "dd/MM/yyyy")
-        let endDate = moment(fuelData.to, "dd/MM/yyyy")
+        let startDate = moment(fuelData.from, dateTimeShortFormat)
+        let endDate = moment(fuelData.to, dateTimeShortFormat)
 
         specificFuelData[fuelType].totalSpent = roundNumber(fuelData.totalSpent)
         specificFuelData[fuelType].totalSpentDiscount = roundNumber(fuelData.totalSpentDiscount)

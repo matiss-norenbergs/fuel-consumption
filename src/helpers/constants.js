@@ -1,49 +1,52 @@
+import { getTranslation } from "./translationHelper"
+
 const localStorageConstants = {
     MN_THEME_LIGHT: "MN_THEME_LIGHT",
-    MN_FUEL_DATA: "MN_FUEL_DATA"
+    MN_FUEL_DATA: "MN_FUEL_DATA",
+    MN_USER_LANG: "MN_USER_LANG",
 }
 
 const calculateTotal = (data) => `${data.totalPrice} (${data.priceAfterDiscount})`
 
 const consumptionColumns = [
     {
-        name: "Provider",
+        name: getTranslation("provider"),
         field: "provider",
         textAlign: "text-left",
         width: 120
     },
     {
-        name: "Fuel type",
+        name: getTranslation("fuelType"),
         field: "fuelType",
         textAlign: "text-left",
         width: 100
     },
     {
-        name: "Amount (l)",
+        name: getTranslation("amount"),
         field: "amount",
         textAlign: "text-right",
         width: 120
     },
     {
-        name: "Price (€/l)",
+        name: getTranslation("price"),
         field: "price",
         textAlign: "text-right",
         width: 120
     },
     {
-        name: "Discount (€/l)",
+        name: getTranslation("discount"),
         field: "discount",
         textAlign: "text-right",
         width: 120
     },
     {
-        name: "Date",
+        name: getTranslation("date"),
         field: "date",
         textAlign: "text-center",
         width: 160
     },
     {
-        name: "Total (€)",
+        name: getTranslation("total"),
         field: "total",
         textAlign: "text-right",
         width: 150,
@@ -52,10 +55,10 @@ const consumptionColumns = [
 ]
 
 const fuelTypeOptions = {
-    1: "Diesel",
-    2: "Gasoline (E98)",
-    3: "Gasoline (E95)",
-    4: "Gas"
+    1: getTranslation("diesel"),
+    2: getTranslation("gasoline98"),
+    3: getTranslation("gasoline95"),
+    4: getTranslation("gas")
 }
 
 const fuelProviderOptions = {

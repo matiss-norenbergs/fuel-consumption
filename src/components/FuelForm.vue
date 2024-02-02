@@ -3,6 +3,7 @@
 
     import { fuelTypeOptions, fuelProviderOptions } from "../helpers/constants.js"
     import { saveFuelData, getDateString } from "../helpers/fuelHelper.js"
+    import { getTranslation } from "../helpers/translationHelper.js"
 
     const form = ref({
         provider: 1,
@@ -19,13 +20,27 @@
             const errors = []
 
             Object.keys(form.value).map((field, index) => {
-                // if (!form.value[field])
-                //     errors.push(`Error at field ${field}`)
-
-                if (field === "date")
-                    fuelObject[field] = getDateString(form.value[field])
-                else
-                    fuelObject[field] = form.value[field]
+                switch (field) {
+                    case "date":
+                        fuelObject[field] = getDateString(form.value[field], false, "DD/MM/YYYY")
+                        break
+                    case "provider":
+                    case "fuelType":
+                    case "amount":
+                    case "price":
+                        fuelObject[field] = Number(form.value[field])
+                        if (Number.isNaN(fuelObject[field]) || fuelObject[field] <= 0)
+                            errors.push(`Error at field ${field}`)
+                        break
+                    case "discount":
+                        fuelObject[field] = Number(form.value[field])
+                        if (Number.isNaN(fuelObject[field]) || fuelObject[field] < 0)
+                            errors.push(`Error at field ${field}`)
+                        break
+                    default:
+                        fuelObject[field] = form.value[field]
+                        break
+                }
             })
 
             if (errors.length > 0) {
@@ -59,7 +74,9 @@
                     {{ fuelProviderOption }}
                 </option>
             </select>
-            <label for="provider">Provider</label>
+            <label for="provider">
+                {{ getTranslation("provider") }}
+            </label>
         </div>
         <div class="form-item">
             <select
@@ -74,7 +91,9 @@
                     {{ fuelTypeOption }}
                 </option>
             </select>
-            <label for="fuelType">Fuel type</label>
+            <label for="fuelType">
+                {{ getTranslation("fuelType") }}
+            </label>
         </div>
         <div class="form-item">
             <input
@@ -84,9 +103,10 @@
                 min="0"
                 step=".01"
                 required
-                title="Enter the total fuel amount"
             />
-            <label for="amount">Amount (l)</label>
+            <label for="amount">
+                {{ getTranslation("amount") }}
+            </label>
         </div>
         <div class="form-item">
             <input
@@ -97,7 +117,9 @@
                 step=".01"
                 required
             />
-            <label for="price">Price (€/l)</label>
+            <label for="price">
+                {{ getTranslation("price") }}
+            </label>
         </div>
         <div class="form-item">
             <input
@@ -108,7 +130,9 @@
                 step=".01"
                 required
             />
-            <label for="discount">Discount (€/l)</label>
+            <label for="discount">
+                {{ getTranslation("discount") }}
+            </label>
         </div>
         <div class="form-item">
             <input
@@ -117,7 +141,9 @@
                 v-model="form.date"
                 required
             />
-            <label for="date">Date</label>
+            <label for="date">
+                {{ getTranslation("date") }}
+            </label>
         </div>
     </form>
 </template>
