@@ -182,7 +182,8 @@
 
                 &[required] + label:before {
                     content: "* ";
-                    color: yellow;
+                    font-weight: bold;
+                    color: var(--accent);
                 }
             }
         }

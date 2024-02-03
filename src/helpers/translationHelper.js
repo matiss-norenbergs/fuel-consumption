@@ -1,8 +1,10 @@
-import { localStorageConstants } from "./constants"
+const localStorageConstants = {
+    MN_USER_LANG: "MN_USER_LANG"
+}
 
 const supportedLanguages = {
-    "lv": "Latviešu",
     "en-gb": "English",
+    "lv": "Latviešu",
     "de-de": "Deutsch"
 }
 
@@ -184,7 +186,9 @@ const translations = {
     },
 }
 
-const getTranslation = (translationCode) => translations?.[translationCode]?.[localStorage.getItem(localStorageConstants.MN_USER_LANG) || "en-gb"] || `@@ ${translationCode}`
+const selectedLanguage = localStorage.getItem(localStorageConstants.MN_USER_LANG) || "en-gb"
+
+const getTranslation = (translationCode) => translations?.[translationCode]?.[selectedLanguage] || `@@ ${translationCode}`
 
 function setUserLangugage(langId) {
     localStorage.setItem(localStorageConstants.MN_USER_LANG, langId)

@@ -3,7 +3,6 @@ import { getTranslation } from "./translationHelper"
 const localStorageConstants = {
     MN_THEME_LIGHT: "MN_THEME_LIGHT",
     MN_FUEL_DATA: "MN_FUEL_DATA",
-    MN_USER_LANG: "MN_USER_LANG",
 }
 
 const calculateTotal = (data) => `${data.totalPrice} (${data.priceAfterDiscount})`

@@ -21,13 +21,15 @@
 
     const data = ref([])
     const isModalVisible = ref(false)
-    const isActionDisabled = ref(true)
+    const isActionDisabled = ref(false)
     const formElementRef = ref()
 
     function getData() {
+        isActionDisabled.value = true
         const fuelData = getFuelData()
         
         data.value = fuelData
+        isActionDisabled.value = false
     }
 
     function showModal() {
@@ -88,19 +90,20 @@
                                     {{ getTranslation("create") }}
                                 </Button>
                                 <Button
-                                    :disabled="isActionDisabled"
+                                    :disabled="isActionDisabled || true"
                                     icon="edit"
                                 >
                                     {{ getTranslation("edit") }}
                                 </Button>
                                 <Button
-                                    :disabled="isActionDisabled"
+                                    :disabled="isActionDisabled || true"
                                     icon="trash-alt"
                                 >
                                     {{ getTranslation("delete") }}
                                 </Button>
                             </ButtonGroup>
                             <Button
+                                :onClick="getData"
                                 :disabled="isActionDisabled"
                                 icon="sync"
                             >
@@ -143,8 +146,7 @@
         display: flex;
         justify-content: space-between;
         overflow: hidden;
-        height: 100vh;
-        padding-top: var(--header-height);
+        height: calc(100svh - var(--header-height));
 
         .content-inner-wrapper {
             flex: 1;
